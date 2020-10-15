@@ -1,0 +1,33 @@
+FROM ruby:2.7.1-slim
+
+# Install dependencies
+RUN apt-get update -qq; \
+    apt-get install -y build-essential \
+                       libpq-dev;
+
+# Setup Workdir
+RUN mkdir /sgv
+WORKDIR /sgv
+
+ENV RAILS_ENV=production
+ENV RAILS_LOG_TO_STDOUT=true
+ENV DATABASE_ADAPTER=postgresql
+
+# Cache gems
+COPY Gemfile /sgv/Gemfile
+COPY Gemfile.lock /sgv/Gemfile.lock
+
+# Install gems
+RUN bundle install
+COPY . /sgv
+
+RUN mkdir -p tmp/pids
+
+# Add a script to be executed every time the container starts.
+COPY entrypoint.sh /usr/bin/
+RUN chmod +x /usr/bin/entrypoint.sh
+EXPOSE 80
+ENTRYPOINT ["entrypoint.sh"]
+
+# Start the main process.
+CMD ["bundle", "exec", "puma"]

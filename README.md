@@ -1,2 +1,4 @@
 # challenge-sketch
-A suggested starting point for solving our challenges
+Um ponto de partida para a resolução de nossos desafios
+
+**Obs:** Os arquivos de configuração do docker aqui presentes estão configurados para uso em modo de desenvolvimento, não sendo recomendado sua implementação em modo de produção.
